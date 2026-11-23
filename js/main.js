@@ -12,6 +12,36 @@ function animatePath(el, delay) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // ---- Mobile navigation toggle (hamburger menu) ----
+  const navToggle = document.querySelector('.navtoggle');
+  const navMenu = document.getElementById('navmenu');
+  if (navToggle && navMenu) {
+    const setNavOpen = (open) => {
+      navMenu.classList.toggle('open', open);
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    };
+
+    navToggle.addEventListener('click', () => {
+      setNavOpen(!navMenu.classList.contains('open'));
+    });
+
+    // Close after tapping a link inside the menu
+    navMenu.addEventListener('click', (e) => {
+      if (e.target.closest('a')) setNavOpen(false);
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setNavOpen(false);
+    });
+
+    // Reset when resizing up to desktop
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 860) setNavOpen(false);
+    });
+  }
+
   // ---- Hero animation (home page only) ----
   const crisis = document.getElementById('crisisPath');
   const calm = document.getElementById('calmPath');
